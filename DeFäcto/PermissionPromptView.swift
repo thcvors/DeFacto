@@ -23,7 +23,6 @@ struct PermissionPromptView: View {
                 VStack(spacing: 24) {
                     Spacer().frame(height: 60)
 
-                    // App Logo
                     Image("CVO15")
                         .resizable()
                         .scaledToFit()
@@ -40,25 +39,25 @@ struct PermissionPromptView: View {
                     }
 
                     VStack(spacing: 16) {
-                        // Allow Access Button
                         Button(action: {
                             requestPermissions {
                                 showDocPicker = true
                             }
                         }) {
                             HStack {
-                                Image(systemName: "checkmark.shield")
+                                Image(systemName: "key.2.on.ring")
                                 Text("Allow Access")
+                                    .font(.subheadline)
                                     .fontWeight(.semibold)
                             }
                             .foregroundColor(.white)
-                            .padding()
+                            .frame(height: 45)
                             .frame(maxWidth: 500)
                             .background(Color.accentColor)
                             .cornerRadius(12)
+                            .padding(.horizontal)
                         }
 
-                        // Open Settings Button
                         Button(action: {
                             if let url = URL(string: UIApplication.openSettingsURLString) {
                                 UIApplication.shared.open(url)
@@ -67,16 +66,18 @@ struct PermissionPromptView: View {
                             HStack {
                                 Image(systemName: "gearshape")
                                 Text("Open Settings")
+                                    .font(.subheadline)
                                     .fontWeight(.semibold)
                             }
                             .foregroundColor(.white)
-                            .padding()
+                            .frame(height: 45)
                             .frame(maxWidth: 500)
                             .background(Color(UIColor.secondarySystemBackground))
                             .cornerRadius(12)
+                            .padding(.horizontal)
                         }
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.vertical)
 
                     Spacer()
 
@@ -85,7 +86,6 @@ struct PermissionPromptView: View {
                         .foregroundColor(.gray)
                         .padding(.bottom, 12)
                 }
-                .padding(.vertical)
             }
             .background(Color.black.ignoresSafeArea())
             .sheet(isPresented: $showDocPicker, onDismiss: {
@@ -97,7 +97,6 @@ struct PermissionPromptView: View {
         }
     }
 
-    // MARK: - Request Permissions
     func requestPermissions(completion: @escaping () -> Void) {
         PHPhotoLibrary.requestAuthorization { status in
             print("Photo library status: \(status.rawValue)")
@@ -120,7 +119,6 @@ struct PermissionPromptView: View {
     }
 }
 
-// MARK: - Document Picker to Trigger File Access Permission
 struct DocumentAccessTriggerView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.data], asCopy: true)

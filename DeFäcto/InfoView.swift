@@ -2,7 +2,6 @@
 //  InfoView.swift
 //  DeFäcto
 //
-//
 //  Created by CVPRO on 7/24/25.
 //
 
@@ -25,15 +24,13 @@ struct InfoView: View {
                 Color.black.ignoresSafeArea()
 
                 VStack(spacing: 24) {
-                    Spacer()
+                    Spacer(minLength: geometry.safeAreaInsets.top)
 
                     Text("Pull down to go back")
                         .font(.subheadline)
                         .foregroundColor(.white)
-                        .padding(.bottom, 12)
 
                     Spacer()
-
                     Image("Memoji")
                         .resizable()
                         .scaledToFit()
@@ -41,7 +38,6 @@ struct InfoView: View {
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1))
                         .shadow(radius: 4)
-                        .padding(.top, geometry.safeAreaInsets.top + 20)
 
                     VStack(spacing: 6) {
                         Text("DeFäcto")
@@ -60,24 +56,22 @@ struct InfoView: View {
                             .foregroundColor(.gray)
                     }
 
-                    Spacer()
-
                     VStack(spacing: 12) {
-                        infoButton(title: "View on GitHub", icon: "swiftdata", symbolColor:.cyan) {
-                            if let url = URL(string: "https://github.com/cvors/DeFacto") {
+                        infoButton(title: "View on GitHub", icon: "swiftdata", symbolColor: .orange) {
+                            if let url = URL(string: "https://github.com/thcvors/DeFacto") {
                                 UIApplication.shared.open(url)
                             }
                         }
 
-                        infoButton(title: "View Output Package List", icon: "shippingbox", symbolColor: .white) {
+                        infoButton(title: "View Output Package List", icon: "shippingbox", symbolColor: .brown) {
                             checkPackages()
                         }
 
-                        infoButton(title: "Clean up tmp Directory", icon: "trash", symbolColor: .black) {
+                        infoButton(title: "Clean up tmp Directory", icon: "trash", symbolColor: .red) {
                             MyFileManager.shared.resetTmpDirectory()
                         }
 
-                        infoButton(title: "Clean up Output Directory", icon: "trash", symbolColor: .black) {
+                        infoButton(title: "Clean up Output Directory", icon: "trash", symbolColor: .red) {
                             MyFileManager.shared.resetOutputDirectory()
                         }
                     }
@@ -90,7 +84,8 @@ struct InfoView: View {
 
                         Text(FilePaths.outputDirectory.path)
                             .font(.caption2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.white)
+                            .opacity(0.8)
                             .multilineTextAlignment(.center)
                             .lineLimit(3)
                             .padding(.horizontal)
@@ -100,8 +95,11 @@ struct InfoView: View {
 
                     Text("Made by @cvors")
                         .font(.caption2)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(UIColor.tertiaryLabel))
+                        .padding(.bottom, 12)
                 }
+                .padding(.top, geometry.safeAreaInsets.top)
+                .padding(.bottom, geometry.safeAreaInsets.bottom)
             }
         }
         .alert(isPresented: $showNoPackagesAlert) {
@@ -113,7 +111,7 @@ struct InfoView: View {
         }
     }
 
-    private func infoButton(title: String, icon: String, symbolColor: Color = .gray.opacity(0.7), action: @escaping () -> Void) -> some View {
+    private func infoButton(title: String, icon: String, symbolColor: Color = .gray, action: @escaping () -> Void) -> some View {
         Button(action: {
             withAnimation(.interpolatingSpring(stiffness: 200, damping: 5)) {
                 action()
@@ -122,27 +120,26 @@ struct InfoView: View {
             HStack {
                 Image(systemName: icon)
                     .foregroundColor(symbolColor)
-                    .scaleEffect(1.05)
                 Text(title)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
                     .font(.subheadline)
+                    .fontWeight(.semibold)
                 Spacer()
             }
-            .padding()
+            .padding(.horizontal)
+            .frame(height: 45)
             .frame(maxWidth: .infinity)
             .background(Color(UIColor.secondarySystemBackground))
-            .cornerRadius(14)
+            .cornerRadius(12)
         }
     }
 
     private func checkPackages() {
         do {
             let packages = try FileManager.default.contentsOfDirectory(atPath: FilePaths.outputDirectory.path)
-            if packages.isEmpty {
-                showNoPackagesAlert = true
-            } else {
+            showNoPackagesAlert = packages.isEmpty
+            if !packages.isEmpty {
                 showPackagesList.toggle()
-                // TODO: Navigate to PackageListView
             }
         } catch {
             print("Error loading packages: \(error.localizedDescription)")

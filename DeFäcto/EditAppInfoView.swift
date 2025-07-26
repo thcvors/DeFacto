@@ -15,7 +15,7 @@ struct EditAppInfoView: View {
     @State private var exportedURL: URL?
     @State private var showShareSheet = false
     @State private var showSetupInstructions = false
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -23,7 +23,6 @@ struct EditAppInfoView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        
                         Text("Pull down to go back")
                             .font(.subheadline)
                             .foregroundColor(.white)
@@ -65,8 +64,7 @@ struct EditAppInfoView: View {
                         .background(Color.gray.opacity(0.15))
                         .cornerRadius(20)
 
-                        // Setup Instructions
-                        VStack(spacing: 0) {
+                        VStack(spacing: 4) {
                             Button {
                                 withAnimation {
                                     showSetupInstructions.toggle()
@@ -75,8 +73,10 @@ struct EditAppInfoView: View {
                                 HStack {
                                     Text("Setup Instructions")
                                     Spacer()
-                                    Image(systemName: showSetupInstructions ? "chevron.down.circle" : "chevron.right.circle")                                }
+                                    Image(systemName: showSetupInstructions ? "chevron.down.circle" : "chevron.right.circle")
+                                }
                                 .font(.subheadline)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.white)
                                 .padding()
                                 .background(.ultraThinMaterial)
@@ -84,7 +84,7 @@ struct EditAppInfoView: View {
                             }
 
                             if showSetupInstructions {
-                                VStack(alignment: .leading, spacing: 8) {
+                                VStack(alignment: .leading, spacing: 4) {
                                     headerRow(symbolName: "1.circle", text: "Edit general app info like name or ID.")
                                     headerRow(symbolName: "2.circle", text: "Use a custom icon by tapping the one above.")
                                     headerRow(symbolName: "3.circle", text: "Skip any field to keep its original value.")
@@ -96,9 +96,8 @@ struct EditAppInfoView: View {
                             }
                         }
 
-                        // Editable Fields
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text("Confirmed to edit.")
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("info (confirmed to edit)")
                                 .font(.callout.bold())
                                 .foregroundColor(.white)
 
@@ -107,7 +106,6 @@ struct EditAppInfoView: View {
                             appField("Enter new package name", $manager.bundleIdentifier)
                         }
 
-                        // Version / Build
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Version")
@@ -121,7 +119,7 @@ struct EditAppInfoView: View {
                                 Text("Build")
                                     .foregroundColor(.gray)
                                     .font(.footnote)
-                                Text("11")
+                                Text("15")
                                     .foregroundColor(.white)
                             }
                         }
@@ -152,9 +150,10 @@ struct EditAppInfoView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .padding()
+                            .frame(height: 45)
                             .frame(maxWidth: .infinity)
                             .background(Color(UIColor.secondarySystemBackground))
-                            .cornerRadius(14)
+                            .cornerRadius(12)
                         }
                         .disabled(manager.ipaURL == nil)
 
@@ -188,6 +187,7 @@ struct EditAppInfoView: View {
             }
         }
     }
+
     @ViewBuilder
     private func appField(_ title: String, _ binding: Binding<String>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -202,8 +202,7 @@ struct EditAppInfoView: View {
                 .font(.subheadline)
         }
     }
-    
-    // MARK: - Helper Views
+
     private func headerRow(symbolName: String, text: String) -> some View {
         HStack(spacing: 8) {
             Image(systemName: symbolName)

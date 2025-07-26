@@ -18,9 +18,8 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
-                Spacer().frame(height: 32) // 상단 간격
-
-                // More About 버튼
+                Spacer().frame(height: 32)
+                
                 Button(action: {
                     showInfoSheet = true
                 }) {
@@ -30,31 +29,29 @@ struct MainView: View {
                     }
                     .font(.subheadline)
                     .foregroundColor(.accentColor)
+                    .frame(height: 45)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color(UIColor.secondarySystemBackground))
-                    .cornerRadius(8) // 덜 둥글게
                 }
                 .padding(.horizontal)
-
-                // 업로드 카드
+                
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(UIColor.secondarySystemBackground))
-                        .frame(height: 160)
+                        .frame(height: 200)
                     VStack(spacing: 10) {
                         Image(systemName: "plus.circle")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 36, height: 36)
                             .foregroundColor(.gray)
-
+                        
                         Text("Drag & Drop or Tap to Browse")
                             .font(.body)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
-
-                        Text("Max file size: 1 GB")
+                        
+                        Text("Only .ipa files are allowed for upload.")
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
@@ -63,68 +60,93 @@ struct MainView: View {
                 .onTapGesture {
                     isPickerPresented = true
                 }
-
+                
                 // 파일 업로드 상태
-                if let fileName = fileManager.ipaURL?.lastPathComponent,
-                   let fileSize = try? FileManager.default.attributesOfItem(atPath: fileManager.ipaURL!.path)[.size] as? NSNumber {
-                    
-                    let formattedSize = ByteCountFormatter.string(fromByteCount: fileSize.int64Value, countStyle: .file)
-
-                    HStack(spacing: 8) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(fileName)
+                if let fileName = fileManager.ipaURL?.lastPathComponent {
+                    if fileManager.appName.isEmpty {
+                        HStack(spacing: 6) {
+                            Text("Look for something else")
                                 .foregroundColor(.white)
                                 .font(.callout)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-
-                            Text(formattedSize)
-                                .foregroundColor(.gray)
-                                .font(.caption2)
+                            
+                            Image(systemName: "xmark.seal")
+                                .foregroundColor(.red)
+                                .symbolEffect(.wiggle.right.byLayer, options: .nonRepeating)
                         }
-
-                        Spacer()
-
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.accentColor)
-                            .font(.caption)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.horizontal)
+                    } else {
+                        let fileSize: String? = {
+                            if let sizeNum = try? FileManager.default.attributesOfItem(atPath: fileManager.ipaURL!.path)[.size] as? NSNumber {
+                                return ByteCountFormatter.string(fromByteCount: sizeNum.int64Value, countStyle: .file)
+                            } else {
+                                return nil
+                            }
+                        }()
+                        
+                        HStack(spacing: 6) {
+                            Image(systemName: "checkmark.seal.fill")
+                                .foregroundColor(.accentColor)
+                                .font(.subheadline)
+                            
+                            VStack(spacing: 2) {
+                                Text(fileName)
+                                    .foregroundColor(.white)
+                                    .font(.callout)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                                
+                                if let size = fileSize {
+                                    Text(size)
+                                        .foregroundColor(.gray)
+                                        .font(.caption2)
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-
                 } else {
                     Text("No files uploaded yet.")
                         .foregroundColor(.gray)
                         .font(.callout)
                 }
+
                 Spacer()
 
-                // Proceed 버튼
-                Button {
-                    showEditSheet = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "chevron.right.circle")
-                        Text("Proceed")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
+                VStack(spacing: 12) {
+                    Button {
+                        showEditSheet = true
+                    } label: {
+                        HStack {
+                            if fileManager.ipaURL == nil {
+                                Text("proceed")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            } else {
+                                Spacer()
+                                Image(systemName: "chevron.right.circle")
+                                    .contentTransition(.symbolEffect(.replace.magic(fallback: .downUp.wholeSymbol), options: .nonRepeating))
+                                Text("PROCEED")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(height: 45)
+                        .frame(maxWidth: .infinity)
+                        .background(fileManager.ipaURL == nil ? Color.gray.opacity(0.3) : Color.accentColor)
+                        .cornerRadius(12)
                     }
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(fileManager.ipaURL == nil ? Color.gray.opacity(0.3) : Color.accentColor)
-                    .cornerRadius(8)
-                }
-                .disabled(fileManager.ipaURL == nil || fileManager.appName.isEmpty)
-                .padding(.horizontal)
+                    .disabled(fileManager.ipaURL == nil || fileManager.appName.isEmpty)
+                    .padding(.horizontal)
 
-                Text("Made by @cvors")
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 12)
+                    Text("Made by @cvors")
+                        .font(.caption2)
+                        .foregroundColor(Color(UIColor.tertiaryLabel))
+                        .padding(.bottom, 12)
+                }
             }
             .background(Color.black.ignoresSafeArea())
             .fileImporter(
