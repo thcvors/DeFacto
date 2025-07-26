@@ -118,7 +118,7 @@ struct MainView: View {
                     .background(fileManager.ipaURL == nil ? Color.gray.opacity(0.3) : Color.accentColor)
                     .cornerRadius(8)
                 }
-                .disabled(fileManager.ipaURL == nil)
+                .disabled(fileManager.ipaURL == nil || fileManager.appName.isEmpty)
                 .padding(.horizontal)
 
                 Text("Made by @cvors")

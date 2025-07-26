@@ -26,13 +26,14 @@ struct InfoView: View {
 
                 VStack(spacing: 24) {
                     Spacer()
-                    // 돌아가기 버튼
+
                     Text("Pull down to go back")
                         .font(.subheadline)
                         .foregroundColor(.white)
                         .padding(.bottom, 12)
+
                     Spacer()
-                    // 로고
+
                     Image("Memoji")
                         .resizable()
                         .scaledToFit()
@@ -42,7 +43,6 @@ struct InfoView: View {
                         .shadow(radius: 4)
                         .padding(.top, geometry.safeAreaInsets.top + 20)
 
-                    // 설명
                     VStack(spacing: 6) {
                         Text("DeFäcto")
                             .font(.title2)
@@ -62,15 +62,14 @@ struct InfoView: View {
 
                     Spacer()
 
-                    // 버튼 목록
                     VStack(spacing: 12) {
-                        infoButton(title: "View on GitHub", icon: "link.circle", symbolColor: Color(UIColor.link)){
+                        infoButton(title: "View on GitHub", icon: "swiftdata", symbolColor:.cyan) {
                             if let url = URL(string: "https://github.com/cvors/DeFacto") {
                                 UIApplication.shared.open(url)
                             }
                         }
 
-                        infoButton(title: "View Output Package List", icon: "shippingbox", symbolColor: .cyan) {
+                        infoButton(title: "View Output Package List", icon: "shippingbox", symbolColor: .white) {
                             checkPackages()
                         }
 
@@ -84,7 +83,6 @@ struct InfoView: View {
                     }
                     .padding(.horizontal)
 
-                    // 경로 정보
                     VStack(spacing: 6) {
                         Text("Output Path")
                             .font(.caption2)
@@ -97,8 +95,9 @@ struct InfoView: View {
                             .lineLimit(3)
                             .padding(.horizontal)
                     }
+
                     Spacer()
-                    
+
                     Text("Made by @cvors")
                         .font(.caption2)
                         .foregroundColor(.gray)
@@ -114,11 +113,16 @@ struct InfoView: View {
         }
     }
 
-    private func infoButton(title: String, icon: String, symbolColor: Color, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+    private func infoButton(title: String, icon: String, symbolColor: Color = .gray.opacity(0.7), action: @escaping () -> Void) -> some View {
+        Button(action: {
+            withAnimation(.interpolatingSpring(stiffness: 200, damping: 5)) {
+                action()
+            }
+        }) {
             HStack {
                 Image(systemName: icon)
                     .foregroundColor(symbolColor)
+                    .scaleEffect(1.05)
                 Text(title)
                     .foregroundColor(.black)
                     .font(.subheadline)

@@ -79,7 +79,7 @@ struct EditAppInfoView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color.gray.opacity(0.2))
+                                .background(.ultraThinMaterial)
                                 .cornerRadius(12)
                             }
 

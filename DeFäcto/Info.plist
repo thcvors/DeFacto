@@ -2,16 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UISupportsDocumentBrowser</key>
-	<true/>
-	<key>NSFileProviderDomainUsageDescription</key>
-	<string>DeFäcto requires access to your Files.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Choose a photo to use as the app icon.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>DeFäcto requires access to your Camera.</string>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -26,7 +16,11 @@
 			</array>
 		</dict>
 	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UISupportsDocumentBrowser</key>
 	<true/>
 </dict>
 </plist>
