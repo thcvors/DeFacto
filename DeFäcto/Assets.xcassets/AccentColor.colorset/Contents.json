@@ -2,8 +2,8 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "visionos",
-        "reference" : "systemGreenColor"
+        "platform" : "ios",
+        "reference" : "systemBlueColor"
       },
       "idiom" : "universal"
     },
@@ -15,8 +15,8 @@
         }
       ],
       "color" : {
-        "platform" : "osx",
-        "reference" : "systemGreenColor"
+        "platform" : "universal",
+        "reference" : "systemBlueColor"
       },
       "idiom" : "universal"
     }

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "CVO15.png",
+      "filename" : "CVO15 8.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "CVO15 3.png",
+      "filename" : "CVO15 6.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -28,7 +28,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "CVO15 1.png",
+      "filename" : "CVO15 9.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -39,7 +39,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "CVO15 4.png",
+      "filename" : "CVO15 7.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -55,7 +55,7 @@
       "scale" : "2x"
     },
     {
-      "filename" : "CVO15 2.png",
+      "filename" : "CVO15 10.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
